@@ -1,0 +1,4 @@
+documentation
+http://unix.stackexchange.com/  - forum to train linux knowledge
+http://www.linuxfromscratch.org/  -  build your own linux
+http://www.tldp.org/  -  in depth linux documentation
