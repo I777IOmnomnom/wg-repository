@@ -1,10 +1,12 @@
 import subprocess
 import re
 
+
+
 # Define variables used for processing
 filler_flag = True
 filler_list = []
-path = '/share/MD0Data/Multimedia/Serien/Anime-Cartoon/OnePiece/'
+path = '/media/linkstation/Multimedia/Serien/Anime-Cartoon/OnePiece/'
 l = '50-51,54-60,93,98-99,101-102,131-143,196-206,213-216,220-226,279-283,291-292,303,317-319,326-336,382-384,406-407,426-429,457-458,492,497-499,506,542,575-578,590,626-628,653'
 l = l.split(',')
 
