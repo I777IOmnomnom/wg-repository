@@ -19,6 +19,8 @@ for i in l:
     else:
         filler_list.append(i)
 
+print(filler_list)
+
 # Checks if the current episode is a filler
 cmd = 'cat /home/robby/Documents/episode_crawler/episode'
 current_episode = subprocess.check_output(cmd, shell=True, universal_newlines=True).strip()
