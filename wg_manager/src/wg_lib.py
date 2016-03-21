@@ -26,7 +26,7 @@ class DataStorageLib():
         '''
         data_storage_dict = {}
 
-        file = os.open(self.data, 'r')
+        file = os.open(self.data_storage, 'r')
         for line in file:
             name = line.split(',')[0]
             path = line.split(',')[1]
