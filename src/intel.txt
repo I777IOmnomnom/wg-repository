@@ -4,3 +4,4 @@ http://www.linuxfromscratch.org/  -  build your own linux
 http://www.tldp.org/  -  in depth linux documentation
         cmd = ('sshpass -p ' + password + ' ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -p ' +
                port + ' ' + user + '@' + ip + ' ' + '\'' + cmd + '\'')
+https://docs.python.org/3/library/
