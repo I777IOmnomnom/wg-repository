@@ -1,4 +1,4 @@
-from wg_manager.wg_lib import WgLib
+from wg_manager.src.wg_lib import WgLib
 
 class MediaFileManagerException(Exception):
     pass
