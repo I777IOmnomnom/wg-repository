@@ -1,27 +1,21 @@
-from lib.wg_lib import WgLib
-import os
+from wg_manager.wg_lib import WgLib
 
 class MediaFileManagerException(Exception):
     pass
 
-class NasFileManager(self):
+class NasFileManager():
     def __init__(self, path='Multimedia'):
         '''
 
         :return:
         '''
 
-        self.exec = WgLib.exec_nas_cmd(cmd)
+        self.exec = WgLib.exec_cmd(cmd)
 
         self.source = '/share/MD0_DATA/'
         self.current_file = 0
 
     def get_
-
-
-
-
-
 
         cmd = 'll ' + source + ' | grep ' + path + ' | cut -d \' \' -f4'
         source_file_count = self.exec(cmd)
