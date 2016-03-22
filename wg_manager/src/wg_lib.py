@@ -1,21 +1,30 @@
-import logging as logging
 import subprocess
 import os
 import csv
 import sys
+
+
 class BasicException(Exception):
     pass
 
 
 class DataStorageLib():
+
+    def __init__(self):
+        '''
+        Main function.
+        :return:
+        '''
+        self.default_data_storage = os.path.join(os.path.abspath(__file__).split('/src/')[0], 'data', 'data.csv')
+
     def generate_data_storage(self):
         '''
+        Obsolete?
         Creates the datamodel (which by now is only a csv file)
         :return:
         '''
-        self.data_storage = os.path.join(os.path.abspath(__file__).split('/src/')[0], 'data', 'data.csv')
-        os.open(self.data_storage, 'r')
-        os.close(self.data_storage)
+        os.open(self.default_data_storage, 'r')
+        os.close(self.default_data_storage)
 
         return
 
@@ -26,11 +35,13 @@ class DataStorageLib():
         '''
         data_storage_dict = {}
 
-        file = os.open(self.data_storage, 'r')
+        file = os.open(self.data_storage, 'r').split('\n')
         for line in file:
             name = line.split(',')[0]
             path = line.split(',')[1]
-            data_storage_dict.append(name, path)
+            data_storage_dict[name] = path
+
+        logger.info('Retrieved {} from the data storage.'.format(len(data_storage_dict)))
 
         return data_storage_dict
 
@@ -43,7 +54,7 @@ class DataStorageLib():
         :return:
         '''
         if os.exists(os.path.join(path, name)):
-            data_storage_dict.append(name, path)
+            data_storage_dict[name] = path
             msg = '{0} in {1} successfully added.'.format(str(name), str(path))
             WgLib.logger('INFO', msg)
         else:
@@ -64,7 +75,7 @@ class DataStorageLib():
         for key, value in data_storage_dict:
             write.writerow([key, value])
 
-        WgLib.logger('INFO', '{0} entries written to data.csv'.format(len(data_storage_dict)))
+        logger.info('INFO', '{0} entries written to data.csv'.format(len(data_storage_dict)))
 
         return
 
@@ -135,33 +146,15 @@ class WgLib():
             raise WgLibException('No command given.')
 
         log_msg = 'Executing: ' + str(cmd)
-        self.logger('INFO', log_msg)
+        self.logger.info(log_msg)
 
         try:
             ret = subprocess.check_output(cmd, shell=True, universal_newlines=True).strip()
         except subprocess.CalledProcessError as e:
-            self.logger('DEBUG', e)
+            self.logger.debug( e)
 
         return string(ret)
 
-    def logger(type, msg):
-        '''
-        Logs in INFO or Debug after checking is the msg is not empty.
-
-        :param self:
-        :param type:
-        :param msg:
-        :return:
-        '''
-        logger = logging.getLogger()
-        if type is 'INFO':
-            logger.info(msg)
-        elif type is 'DEBUG':
-            logger.debug(msg)
-        else:
-            raise BasicException('No suitable type given. Please use only INFO and DEBUG.')
-
-        return
 
 class logger():
 
