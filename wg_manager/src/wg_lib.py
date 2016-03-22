@@ -2,7 +2,7 @@ import logging as logging
 import subprocess
 import os
 import csv
-
+import sys
 class BasicException(Exception):
     pass
 
@@ -163,8 +163,48 @@ class WgLib():
 
         return
 
+class logger():
+
+    def info(self, msg):
+        '''
+        Logs with type INFO.
+        :param msg:
+        :return:
+        '''
+        date = self.get_asci_time()
+        log_msg = ' - '.join(date, str(msg))
+
+        return sys.stdout.write(log_msg)
+
+    def debug(self, msg):
+        '''
+        Logs with type DEBUG.
+        :param msg:
+        :return:
+        '''
+        date = self.get_asci_time()
+        log_msg = ' - '.join(date, str(msg))
+
+        return sys.stdout.write(log_msg)
+
+    def get_asci_time(self):
+        import time
+        '''
+        Returns the current time in YYYY.MM.DD - HH:MM:SS as string.
+        :return:
+        '''
+        #current time is returned in WD MM DD HH:MM:SS YYYY
+        time_list = time.asctime().strip().split(' ')
+
+        year = time_list[4]
+        month = time_list[1]
+        day = time_list[2]
+        time = time_list[3]
+
+        ret = str(' - '.join(' '.join(year, month, day), time))
+
+        return ret
 
 if __name__ is '__main__':
     __init__ = DataModelLib
     __init__.generate_datamodel()
-    print('hallo')
