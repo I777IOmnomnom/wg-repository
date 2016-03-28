@@ -1,8 +1,7 @@
 import subprocess
-import os
+import os.path
 import csv
 import sys
-
 
 class BasicException(Exception):
     pass
@@ -15,16 +14,10 @@ class DataStorageLib():
         Main function.
         :return:
         '''
-        self.default_data_storage = os.path.join(os.path.abspath(__file__).split('/src/')[0], 'data', 'data.csv')
+        self.default_data_storage = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../', 'data', 'data.csv')
 
-    def generate_data_storage(self):
-        '''
-        Obsolete?
-        Creates the datamodel (which by now is only a csv file)
-        :return:
-        '''
-        os.open(self.default_data_storage, 'r')
-        os.close(self.default_data_storage)
+        if not os.path.isfile(self.default_data_storage):
+            os.open(self.default_data_storage, 'a+')
 
         return
 
@@ -33,16 +26,15 @@ class DataStorageLib():
         Return the data_storage as dictonary where key is the name and value is the absolut path.
         :return:
         '''
-        data_storage_dict = {}
-
-        file = os.open(self.data_storage, 'r').split('\n')
-        for line in file:
-            name = line.split(',')[0]
-            path = line.split(',')[1]
-            data_storage_dict[name] = path
+        data_storage_dict = csv.reader(open(self.default_data_storage, 'r'))
 
         logger.info('Retrieved {} from the data storage.'.format(len(data_storage_dict)))
 
+        for key in data_storage_dict:
+            if os.path.exists(os.path.join(path, name)):
+            data_storage_dict[name] = path
+            msg = '{0} in {1} successfully added.'.format(str(name), str(path))
+            WgLib.logger('INFO', msg)
         return data_storage_dict
 
     def update_data_storage(self, name, path, data_storage_dict):
@@ -53,7 +45,7 @@ class DataStorageLib():
         :param data_storage_dict:
         :return:
         '''
-        if os.exists(os.path.join(path, name)):
+        if os.path.exists(os.path.join(path, name)):
             data_storage_dict[name] = path
             msg = '{0} in {1} successfully added.'.format(str(name), str(path))
             WgLib.logger('INFO', msg)
@@ -63,15 +55,16 @@ class DataStorageLib():
 
     def del_data_storage_entrie(self, data_storage_dict, name):
 ######TODO: REFACTOR UPDATE TO USE SINGLE ENTRIES AND REDEFINE THIS GARBAGE HERE
-    def close_data_storage(self, data_storage_dict):
+    def close(self):
+        pathe_data_storage(self, data_storage_dict):
         '''
-        Closes the data_storage and permanently stores it. After the data_storage is closed
+        Clos.pathes the data_storage and permanently stores it. After the data_storage is clos.pathed
         another open_data_storage() should be executed befor updating the data_storage
         to prevent multiple accesses.
         :param data_storage_dict:
         :return:
         '''
-        write = csv.writer(os.open(self.data_storage, 'a')
+        write = csv.writer(os.path.open(self.data_storage, 'a')
         for key, value in data_storage_dict:
             write.writerow([key, value])
 
@@ -113,7 +106,7 @@ class WgLib():
         :return:
         '''
         dirs = []
-        ret = os.listdir(path)
+        ret = os.path.listdir(path)
 
         for _ in ret:
             dir = os.path.join(path, _)

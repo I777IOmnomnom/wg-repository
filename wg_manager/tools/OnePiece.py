@@ -25,19 +25,24 @@ print(filler_list)
 cmd = 'cat /home/robby/Documents/episode_crawler/episode'
 current_episode = subprocess.check_output(cmd, shell=True, universal_newlines=True).strip()
 if len(str(current_episode)) != 3:
+    current_episode_plain_number = current_episode  #refactor this
     current_episode = '0' + str(current_episode)
 while filler_flag is True:
     print('Current Episode is: One Piece - Episode ' + str(current_episode))
     if current_episode in filler_list:
         filler_flag = True
+        current_episode = int(current_episode) + 1
         print('But it is a filler episode. Checking next episode.')
         current_episode = current_episode + 1
     elif current_episode not in filler_list:
         filler_flag = False
+        current_epsiode_plain_number = int(current_episode_plain_number) +1
         print('Episode is not a filler. Initiate replay...')
     else:
         print('failed')
         break
+
+#subprocess.call('echo {} > /home/robby/Documents/episode_crawler/episode')
 
 # Initiates the current episode via VLC
 all_episodes = os.listdir(path)
