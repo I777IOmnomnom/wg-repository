@@ -14,12 +14,17 @@ class DataStorageLib():
         Main function.
         :return:
         '''
-        self.default_data_storage = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../', 'data', 'data.csv')
+        self.default_data_storage = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../', 'data', 'index.csv')
 
-        if not os.path.isfile(self.default_data_storage):
-            os.open(self.default_data_storage, 'a+')
+    def check_data_storage(self):
+        '''
 
-        return
+        :return:
+        '''
+        if os.path.isfile(self.default_data_storage):
+            return True
+        else:
+            return False
 
     def get_data_storage(self):
         '''
@@ -71,6 +76,8 @@ class DataStorageLib():
         logger.info('INFO', '{0} entries written to data.csv'.format(len(data_storage_dict)))
 
         return
+
+
 
 class WgLib():
     def format_list(self, list, seperator='-'):
