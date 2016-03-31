@@ -3,81 +3,10 @@ import os.path
 import csv
 import sys
 
+from PySide import QtGui, QtCore
+
 class BasicException(Exception):
     pass
-
-
-class DataStorageLib():
-
-    def __init__(self):
-        '''
-        Main function.
-        :return:
-        '''
-        self.default_data_storage = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../', 'data', 'index.csv')
-
-    def check_data_storage(self):
-        '''
-
-        :return:
-        '''
-        if os.path.isfile(self.default_data_storage):
-            return True
-        else:
-            return False
-
-    def get_data_storage(self):
-        '''
-        Return the data_storage as dictonary where key is the name and value is the absolut path.
-        :return:
-        '''
-        data_storage_dict = csv.reader(open(self.default_data_storage, 'r'))
-
-        logger.info('Retrieved {} from the data storage.'.format(len(data_storage_dict)))
-
-        for key in data_storage_dict:
-            if os.path.exists(os.path.join(path, name)):
-            data_storage_dict[name] = path
-            msg = '{0} in {1} successfully added.'.format(str(name), str(path))
-            WgLib.logger('INFO', msg)
-        return data_storage_dict
-
-    def update_data_storage(self, name, path, data_storage_dict):
-        '''
-        Appends the data storage if the given key value pair is an existing file.
-        :param name:
-        :param path:
-        :param data_storage_dict:
-        :return:
-        '''
-        if os.path.exists(os.path.join(path, name)):
-            data_storage_dict[name] = path
-            msg = '{0} in {1} successfully added.'.format(str(name), str(path))
-            WgLib.logger('INFO', msg)
-        else:
-            msg = '{0} in {1} could not be added. It does not exist.'.format(str(name), str(path))
-            WgLib.logger('INFO', msg)
-
-    def del_data_storage_entrie(self, data_storage_dict, name):
-######TODO: REFACTOR UPDATE TO USE SINGLE ENTRIES AND REDEFINE THIS GARBAGE HERE
-    def close(self):
-        pathe_data_storage(self, data_storage_dict):
-        '''
-        Clos.pathes the data_storage and permanently stores it. After the data_storage is clos.pathed
-        another open_data_storage() should be executed befor updating the data_storage
-        to prevent multiple accesses.
-        :param data_storage_dict:
-        :return:
-        '''
-        write = csv.writer(os.path.open(self.data_storage, 'a')
-        for key, value in data_storage_dict:
-            write.writerow([key, value])
-
-        logger.info('INFO', '{0} entries written to data.csv'.format(len(data_storage_dict)))
-
-        return
-
-
 
 class WgLib():
     def format_list(self, list, seperator='-'):
@@ -151,9 +80,50 @@ class WgLib():
         try:
             ret = subprocess.check_output(cmd, shell=True, universal_newlines=True).strip()
         except subprocess.CalledProcessError as e:
-            self.logger.debug( e)
+            self.logger.debug(e)
 
         return string(ret)
+
+
+class FrontEndElements():
+
+    def __init__(self):
+        pass
+
+    def create_widget(self, width, height):
+        wid = QtGui.QWidget()
+        wid.resize(width, height)
+        wid.setWindowTitle('WGus Managerus')
+        p = wid.palette()
+        p.setColor(wid.backgroundRole(), QtCore.Qt.lightGray)
+        wid.setPalette(p)
+
+        return wid
+
+    def quit_button(self, parent):
+        qbtn = QtGui.QPushButton('EXIT', parent)
+        qbtn.clicked.connect(QtCore.QCoreApplication.instance().quit)
+        qbtn.resize(700, 180)
+        qbtn.move(6010, 700)
+
+        return qbtn
+
+    def push_button(self, name, function, parent, x , y):
+        '''
+
+        :param x:
+        :param y:
+        :param parent:
+        :param name:
+        :param function:
+        :return:
+        '''
+        qbtn = QtGui.QPushButton(name, parent)
+        qbtn.clicked.connect(function)
+        qbtn.resize(1500, 200)
+        qbtn.move(x, y)
+
+        return qbtn
 
 
 class logger():
