@@ -5,10 +5,36 @@ import sys
 
 from PySide import QtGui, QtCore
 
+
 class BasicException(Exception):
     pass
 
-class WgLib():
+class MultiMediaLib():
+
+    def exec_netflix(self):
+        pass
+
+    def exec_spotify(self):
+        pass
+
+    def exec_vlc(self,titel, subtitle=False, fullscreen=True, language='german'):
+        pass
+
+
+class NewsLib():
+
+    def get_rss_feed(self, source):
+        pass
+
+    def analyze_rss_feed(self, rss_feed):
+        pass
+
+    def format_rss_feed(self, rss_feed):
+        pass
+
+
+class NasLib():
+
     def format_list(self, list, seperator='-'):
         '''
         Takes a list and formats it. Returns a list with single elements. The seperator
