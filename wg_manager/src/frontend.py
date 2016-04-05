@@ -4,6 +4,11 @@ from PySide import QtCore, QtGui
 from wg_manager.src.wg_lib import FrontEndElements
 
 app = QtGui.QApplication(sys.argv)
+# I shouldn't do the bellow here but this frontend shit fucks me up
+get_screen = app.desktop().screenGeometry()
+width, height = get_screen.width(), get_screen.height()
+mw = FrontEndElements.create_main_window(width, height)
+mw.show()
 gui = QtGui
 core = QtCore
 
@@ -13,23 +18,47 @@ class FrontEndException(Exception):
 
 
 class FrontEnd():
+##### This might be the worst FrontEnd approach I could have choosen but it's the easiest one #####
+# Every new "tap" creates its own frontend which is located in deticated methods.
+# The wglib provides a basic algorithm to create buttons, widgits and function calls.
 
     def __init__(self):
         self.fee = FrontEndElements()
-        get_screen = app.desktop().screenGeometry()
-        self.width, self.height = get_screen.width(), get_screen.height()
 
-    def init(self):
-        wid = self.fee.create_widget(self.width, self.height)
-        self.fee.push_button('Movie', self.help(), wid, 210, 25)
-        self.fee.push_button('Serie', self.help(), wid, 210, 250)
-        self.fee.push_button('Music', self.help(), wid, 210, 475)
-        self.fee.push_button('Games', self.help(), wid, 210, 700)
-        self.fee.quit_button()
+
+    def initUI(self):
+        wid = self.fee.create_widget(width, height)
+
+        self.fee.push_button('Explore something (Platzhalter)', self.movieUI, wid, 210, 25)
+        self.fee.push_button('Watch something...', self.serieUI, wid, 210, 225)
+        self.fee.push_button('List to something...', self.musicUI, wid, 210, 425)
+        self.fee.push_button('Play something ...', self.gamesUI, wid, 210, 625)
+        self.fee.quit_button(wid)
+
         wid.show()
+        # sys.exit(app.exec_())
+
+        return
+
+    def movieUI(self):
+        self.wid.hide()
+        wid = self.fee.create_widget(width, height)
+        self.fee.push_button('Watch movie from NAS', self.helper, wid, 210, 25)
+        self.fee.push_button('Watch serie from NAs', self.helper, wid, 210, 225)
+        self.fee.push_button('Watch Netflix', self.helper, wid, 210, 425)
+
         sys.exit(app.exec_())
 
-    def help(self):
-        print('success')
+    def serieUI(self):
+        print('serie')
+
+    def musicUI(self):
+        print('music')
+
+    def gamesUI(self):
+        print('games')
+
+    def helper(self):
+        print('helper is helping')
 if __name__ == '__main__':
-    FrontEnd().init()
+    FrontEnd().initUI()

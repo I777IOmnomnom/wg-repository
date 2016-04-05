@@ -82,7 +82,7 @@ class WgLib():
         except subprocess.CalledProcessError as e:
             self.logger.debug(e)
 
-        return string(ret)
+        return str(ret)
 
 
 class FrontEndElements():
@@ -90,21 +90,38 @@ class FrontEndElements():
     def __init__(self):
         pass
 
-    def create_widget(self, width, height):
-        wid = QtGui.QWidget()
+    def create_main_window(self, width, height):
+        # Creates the main window which is used as parent for every widget.
+        # Every new widget becomes the main window in front of the real main window.
+        # This is due the easy access for widgets
+        mw = QtGui.QMainWindow()
+        mw.resize(width, height)
+        mw.setWindowTitle('WGus Managerus')
+
+        # Colors the main window
+        p = mw.palette()
+        p.setColor(mw.backgroundRole(), QtCore.Qt.lightGray)
+        mw.setPalette(p)
+
+        return mw
+
+    def create_widget(self, mw, width, height):
+        # Creates a new widgit using the current screen resolution
+        wid = QtGui.QWidget(mw)
         wid.resize(width, height)
         wid.setWindowTitle('WGus Managerus')
+
+        # Colors the widgit
         p = wid.palette()
         p.setColor(wid.backgroundRole(), QtCore.Qt.lightGray)
         wid.setPalette(p)
 
         return wid
-
     def quit_button(self, parent):
         qbtn = QtGui.QPushButton('EXIT', parent)
         qbtn.clicked.connect(QtCore.QCoreApplication.instance().quit)
-        qbtn.resize(700, 180)
-        qbtn.move(6010, 700)
+        qbtn.resize(700, 125)
+        qbtn.move(610, 850)
 
         return qbtn
 
@@ -119,8 +136,9 @@ class FrontEndElements():
         :return:
         '''
         qbtn = QtGui.QPushButton(name, parent)
+        qbtn.setStyleSheet("QPushButton { font-size: 32pt }" )
         qbtn.clicked.connect(function)
-        qbtn.resize(1500, 200)
+        qbtn.resize(1500, 175)
         qbtn.move(x, y)
 
         return qbtn
