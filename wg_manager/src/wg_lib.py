@@ -9,19 +9,32 @@ from PySide import QtGui, QtCore
 class BasicException(Exception):
     pass
 
-class MultiMediaLib():
+class MultiMediaLib:
 
     def exec_netflix(self):
-        pass
+        pw = 'ichichich'
+        cmd = ['/usr/bin/netflix-desktop', '--enable-hw-acceleration']
+        netflix = subprocess.Popen(['sudo', '-S'] + cmd,
+                                    stdin=subprocess.PIPE,
+                                    stderr=subprocess.PIPE,
+                                    universal_newlines=True)
+        netflix.communicate(pw + '\n')[1]
+
+        return
 
     def exec_spotify(self):
+        subprocess.Popen('spotify')
+
         pass
 
     def exec_vlc(self,titel, subtitle=False, fullscreen=True, language='german'):
         pass
 
+    def exec_amazon_prime(self):
+        pass
 
-class NewsLib():
+
+class NewsLib:
 
     def get_rss_feed(self, source):
         pass
@@ -33,7 +46,7 @@ class NewsLib():
         pass
 
 
-class NasLib():
+class NasLib:
 
     def format_list(self, list, seperator='-'):
         '''
@@ -111,63 +124,28 @@ class NasLib():
         return str(ret)
 
 
-class FrontEndElements():
+class SystemLib():
 
     def __init__(self):
-        pass
+        self.config_file = os.path.join(os.path.dirname(__file__), '..', 'conf', 'config.csv')
 
-    def create_main_window(self, width, height):
-        # Creates the main window which is used as parent for every widget.
-        # Every new widget becomes the main window in front of the real main window.
-        # This is due the easy access for widgets
-        mw = QtGui.QMainWindow()
-        mw.resize(width, height)
-        mw.setWindowTitle('WGus Managerus')
+    def get_config_param(self, param):
 
-        # Colors the main window
-        p = mw.palette()
-        p.setColor(mw.backgroundRole(), QtCore.Qt.lightGray)
-        mw.setPalette(p)
+        config_dict = {}
 
-        return mw
+        reader = csv.reader(open(self.config_file, 'r'))
+        for row in reader:
+            parameter, value = row
+            if param == 'all':
+                config_dict[parameter] = value
+            elif param == parameter:
+                print(value)
+                return value
+            else:
+                self.logger.alert('Missing config parameter: {} in {}.'.format(param, self.config_file))
 
-    def create_widget(self, mw, width, height):
-        # Creates a new widgit using the current screen resolution
-        wid = QtGui.QWidget(mw)
-        wid.resize(width, height)
-        wid.setWindowTitle('WGus Managerus')
+        return config_dict
 
-        # Colors the widgit
-        p = wid.palette()
-        p.setColor(wid.backgroundRole(), QtCore.Qt.lightGray)
-        wid.setPalette(p)
-
-        return wid
-    def quit_button(self, parent):
-        qbtn = QtGui.QPushButton('EXIT', parent)
-        qbtn.clicked.connect(QtCore.QCoreApplication.instance().quit)
-        qbtn.resize(700, 125)
-        qbtn.move(610, 850)
-
-        return qbtn
-
-    def push_button(self, name, function, parent, x , y):
-        '''
-
-        :param x:
-        :param y:
-        :param parent:
-        :param name:
-        :param function:
-        :return:
-        '''
-        qbtn = QtGui.QPushButton(name, parent)
-        qbtn.setStyleSheet("QPushButton { font-size: 32pt }" )
-        qbtn.clicked.connect(function)
-        qbtn.resize(1500, 175)
-        qbtn.move(x, y)
-
-        return qbtn
 
 
 class logger():
@@ -184,6 +162,17 @@ class logger():
         return sys.stdout.write(log_msg)
 
     def debug(self, msg):
+        '''
+        Logs with type DEBUG.
+        :param msg:
+        :return:
+        '''
+        date = self.get_asci_time()
+        log_msg = ' - '.join(date, str(msg))
+
+        return sys.stdout.write(log_msg)
+
+    def alert(self, msg):
         '''
         Logs with type DEBUG.
         :param msg:
@@ -212,6 +201,6 @@ class logger():
 
         return ret
 
-if __name__ is '__main__':
-    __init__ = DataModelLib
-    __init__.generate_datamodel()
+
+if __name__ == '__main__':
+    SystemLib().get_config_param('media_path')
