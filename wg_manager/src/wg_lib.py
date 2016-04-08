@@ -2,6 +2,7 @@ import subprocess
 import os.path
 import csv
 import sys
+import glob
 
 from PySide import QtGui, QtCore
 
@@ -72,7 +73,7 @@ class NasLib:
 
         return list
 
-    def get_dir_list(self, path):
+    def get_file_list(self, path):
         '''
         Return a list paths containing the initial path and appended all
         contained files. With get_dir_list().split('/')[-1] the actual contained
@@ -80,16 +81,14 @@ class NasLib:
         :param path:
         :return:
         '''
-        dirs = []
-        ret = os.path.listdir(path)
+        files = []
+        for dirpath, _, filenames in os.walk(path):
+            for file in filenames:
+                files.append(os.path.join(dirpath, file))
 
-        for _ in ret:
-            dir = os.path.join(path, _)
-            dirs.append(dir)
+        return files
 
-        return dirs
-
-    def get_dir_type(self, dir):
+    def get_file_type(self, dir):
         '''
         Returns the filetype, weather dir or file.
         :param dir:
@@ -145,7 +144,6 @@ class SystemLib():
                 self.logger.alert('Missing config parameter: {} in {}.'.format(param, self.config_file))
 
         return config_dict
-
 
 
 class logger():
