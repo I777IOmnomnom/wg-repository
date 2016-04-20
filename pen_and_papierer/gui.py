@@ -93,6 +93,8 @@ class Gui():
 
         self.gui()
 
+        return
+
     def gui(self, roll=None):
         '''
 
@@ -108,20 +110,58 @@ class Gui():
         self.push_button_dice('d100', wid, 650, 25)
 
         self.push_button_name(str(self.name_p1), wid, 25, 150)
-        self.push_button_name(str(self.name_p2), wid, 25, 290)
-        self.push_button_name(str(self.name_p3), wid, 25, 430)
-        self.push_button_name(str(self.name_p4), wid, 25, 570)
-        self.push_button_name(str(self.name_p5), wid, 25, 710)
-        self.push_button_name(str(self.name_p6), wid, 25, 850)
+        self.push_button_attr(str(self.attr1_p1), wid, 10, 210)
+        self.push_button_attr(str(self.attr2_p1), wid, 135, 210)
+        self.push_button_attr(str(self.attr3_p1), wid, 260, 210)
+        self.push_button_attr(str(self.attr4_p1), wid, 385, 210)
+        self.push_button_attr(str(self.attr5_p1), wid, 510, 210)
+        self.push_button_attr(str(self.attr6_p1), wid, 635, 210)
+        self.push_button_attr(str(self.attr7_p1), wid, 760, 210)
 
-        self.push_button_attr(str(self.name_p1), wid, 10, 210)
-        self.push_button_attr(str(self.name_p2), wid, 135, 210)
-        self.push_button_attr(str(self.name_p3), wid, 260, 210)
-        self.push_button_attr(str(self.name_p4), wid, 385, 210)
-        self.push_button_attr(str(self.name_p5), wid, 510, 210)
-        self.push_button_attr(str(self.name_p6), wid, 635, 210)
-        self.push_button_attr(str(self.name_p6), wid, 760, 210)
+        self.push_button_name(str(self.name_p2), wid, 25, 150)
+        self.push_button_attr(str(self.attr1_p2), wid, 10, 210)
+        self.push_button_attr(str(self.attr2_p2), wid, 135, 210)
+        self.push_button_attr(str(self.attr3_p2), wid, 260, 210)
+        self.push_button_attr(str(self.attr4_p2), wid, 385, 210)
+        self.push_button_attr(str(self.attr5_p2), wid, 510, 210)
+        self.push_button_attr(str(self.attr6_p2), wid, 635, 210)
+        self.push_button_attr(str(self.attr7_p2), wid, 760, 210)
 
+        self.push_button_name(str(self.name_p3), wid, 25, 150)
+        self.push_button_attr(str(self.attr1_p3), wid, 10, 210)
+        self.push_button_attr(str(self.attr2_p3), wid, 135, 210)
+        self.push_button_attr(str(self.attr3_p3), wid, 260, 210)
+        self.push_button_attr(str(self.attr4_p3), wid, 385, 210)
+        self.push_button_attr(str(self.attr5_p3), wid, 510, 210)
+        self.push_button_attr(str(self.attr6_p3), wid, 635, 210)
+        self.push_button_attr(str(self.attr7_p3), wid, 760, 210)
+
+        self.push_button_name(str(self.name_p4), wid, 25, 150)
+        self.push_button_attr(str(self.attr1_p4), wid, 10, 210)
+        self.push_button_attr(str(self.attr2_p4), wid, 135, 210)
+        self.push_button_attr(str(self.attr3_p4), wid, 260, 210)
+        self.push_button_attr(str(self.attr4_p4), wid, 385, 210)
+        self.push_button_attr(str(self.attr5_p4), wid, 510, 210)
+        self.push_button_attr(str(self.attr6_p4), wid, 635, 210)
+        self.push_button_attr(str(self.attr7_p4), wid, 760, 210)
+
+        self.push_button_name(str(self.name_p5), wid, 25, 150)
+        self.push_button_attr(str(self.attr1_p5), wid, 10, 210)
+        self.push_button_attr(str(self.attr2_p5), wid, 135, 210)
+        self.push_button_attr(str(self.attr3_p5), wid, 260, 210)
+        self.push_button_attr(str(self.attr4_p5), wid, 385, 210)
+        self.push_button_attr(str(self.attr5_p5), wid, 510, 210)
+        self.push_button_attr(str(self.attr6_p5), wid, 635, 210)
+        self.push_button_attr(str(self.attr7_p5), wid, 760, 210)
+
+        self.push_button_name(str(self.name_p6), wid, 25, 150)
+        self.push_button_attr(str(self.attr1_p6), wid, 10, 210)
+        self.push_button_attr(str(self.attr2_p6), wid, 135, 210)
+        self.push_button_attr(str(self.attr3_p6), wid, 260, 210)
+        self.push_button_attr(str(self.attr4_p6), wid, 385, 210)
+        self.push_button_attr(str(self.attr5_p6), wid, 510, 210)
+        self.push_button_attr(str(self.attr6_p6), wid, 635, 210)
+        self.push_button_attr(str(self.attr7_p6), wid, 760, 210)
 
         if roll is not None:
             self.push_button_dice(str(roll), wid, 775, 25)
