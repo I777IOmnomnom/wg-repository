@@ -138,13 +138,11 @@ class SystemLib():
             if param == 'all':
                 config_dict[parameter] = value
             elif param == parameter:
-                print(value)
                 return value
             else:
                 self.logger.alert('Missing config parameter: {} in {}.'.format(param, self.config_file))
 
         return config_dict
-
 
 class logger():
 
