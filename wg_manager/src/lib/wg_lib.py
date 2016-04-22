@@ -13,13 +13,13 @@ class BasicException(Exception):
 class MultiMediaLib:
 
     def exec_netflix(self):
-        pw = 'ichichich'
+        pw = getpw()
         cmd = ['/usr/bin/netflix-desktop', '--enable-hw-acceleration']
         netflix = subprocess.Popen(['sudo', '-S'] + cmd,
                                     stdin=subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     universal_newlines=True)
-        netflix.communicate(pw + '\n')[1]
+        #netflix.communicate(pw + '\n')[1]
 
         return
 
@@ -48,6 +48,20 @@ class NewsLib:
 
 
 class NasLib:
+    def get_file_list(self, path):
+        '''
+        Return a list absolute paths for every file on the storage system. With get_file_list().split('/')[-1]
+        the actual files can be retrieved.
+
+        :param path:
+        :return:
+        '''
+        files = []
+        for dirpath, _, filenames in os.walk(path):
+            for file in filenames:
+                files.append(os.path.join(dirpath, file))
+
+        return files
 
     def format_list(self, list, seperator='-'):
         '''
@@ -73,20 +87,6 @@ class NasLib:
 
         return list
 
-    def get_file_list(self, path):
-        '''
-        Return a list paths containing the initial path and appended all
-        contained files. With get_dir_list().split('/')[-1] the actual contained
-        files can be retrieved.
-        :param path:
-        :return:
-        '''
-        files = []
-        for dirpath, _, filenames in os.walk(path):
-            for file in filenames:
-                files.append(os.path.join(dirpath, file))
-
-        return files
 
     def get_file_type(self, dir):
         '''
