@@ -34,6 +34,17 @@ class MultiMediaLib:
     def exec_amazon_prime(self):
         pass
 
+    def exec_soundcloud(self):
+        """
+
+        :return:
+        """
+        url = 'http://soundcloud.com'
+        cmd = 'firefox --new-window'
+        subprocess.Popen([cmd, url],
+                         stdin=subprocess.PIPE,
+                         stderr=subprocess.PIPE,
+                         universal_newlines=True)
 
 class NewsLib:
 

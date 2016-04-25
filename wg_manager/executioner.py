@@ -3,8 +3,10 @@ from optparse import OptionParser
 import sys
 import time
 import inspect
+
 from PySide import QtCore, QtGui
 from media_handler import MediaHandler
+from wg_lib import MultiMediaLib
 
 # Creates the background application which is responsible for handling all PySide elements.
 app = QtGui.QApplication(sys.argv)
@@ -28,6 +30,7 @@ class ExecutionerException(Exception):
 
 class Executioner:
     def __init__(self):
+        self.mml = MultiMediaLib()
         self.mh = MediaHandler()
 
     def main(self):
@@ -65,6 +68,18 @@ class Executioner:
 
         elif dialog == 'Movie':
             self.moviesUI(wid)
+
+        elif dialog == 'Series':
+            self.seriesUI(wid)
+
+        elif dialog == 'Spotify':
+            self.mml.exec_spotify()
+
+        elif dialog == 'Soundcloud':
+            self.mml.exec_soundcloud
+
+        elif dialog == 'Netflix':
+            self.mml.exec_netflix()
 
         elif dialog == 'Return':
             #magic incoming
@@ -104,7 +119,7 @@ class Executioner:
         :param wid:
         :return:
         """
-        self.push_button('not implemented', wid, 210, 25)
+        self.push_button('News are not implemented', wid, 210, 25)
         self.quit_button(wid)
 
         return
@@ -118,8 +133,32 @@ class Executioner:
         self.push_button('Movie', wid, 210, 25)
         self.push_button('Series', wid, 210, 225)
         self.push_button('Netflix', wid, 210, 425)
-        self.push_button('Streaming (this will take much time)', wid, 210, 625)
+        self.push_button('Streaming (not implemented)', wid, 210, 625)
         self.quit_button(wid)
+
+        wid.show()
+
+        return
+
+    def movieUI(self, wid):
+        """
+
+        :param wid:
+        :return:
+        """
+        # TBD
+
+        wid.show()
+
+        return
+
+    def seriesUI(self, wid):
+        """
+
+        :param wid:
+        :return:
+        """
+        # TBD
 
         wid.show()
 
@@ -130,9 +169,9 @@ class Executioner:
 
         :return:
         """
-        self.push_button('Spotify', self.mml.exec_spotify, wid, 210, 25)
-        self.push_button('Soundcloud(X)', self.helper, wid, 210, 225)
-        self.push_button('Local Music(X)', self.helper, wid, 210, 225)
+        self.push_button('Spotify', wid, 210, 25)
+        self.push_button('Soundcloud(X)', wid, 210, 225)
+        self.push_button('Local Music(X)', wid, 210, 425)
         self.quit_button(wid)
 
         wid.show()
