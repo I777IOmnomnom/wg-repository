@@ -39,9 +39,24 @@ class MultiMediaLib:
 
         :return:
         """
+        app = 'firefox'
+        mode = '--new-window'
         url = 'http://soundcloud.com'
-        cmd = 'firefox --new-window'
-        subprocess.Popen([cmd, url],
+
+        subprocess.Popen([app, mode, url],
+                         stdin=subprocess.PIPE,
+                         stderr=subprocess.PIPE,
+                         universal_newlines=True)
+
+    def exec_steam(self):
+        """
+
+        :return:
+        """
+        app = 'steam'
+        mode = '-bigpicture'
+
+        subprocess.Popen([app, mode],
                          stdin=subprocess.PIPE,
                          stderr=subprocess.PIPE,
                          universal_newlines=True)
@@ -164,7 +179,7 @@ class logger():
         :return:
         '''
         date = self.get_asci_time()
-        log_msg = ' - '.join(date, str(msg))
+        log_msg = ' - '.join([date, str(msg), '\n'])
 
         return sys.stdout.write(log_msg)
 
@@ -175,7 +190,7 @@ class logger():
         :return:
         '''
         date = self.get_asci_time()
-        log_msg = ' - '.join(date, str(msg))
+        log_msg = ' - '.join([date, str(msg), '\n'])
 
         return sys.stdout.write(log_msg)
 
@@ -186,7 +201,7 @@ class logger():
         :return:
         '''
         date = self.get_asci_time()
-        log_msg = ' - '.join(date, str(msg))
+        log_msg = ' - '.join([date, str(msg), '\n'])
 
         return sys.stdout.write(log_msg)
 
@@ -204,7 +219,7 @@ class logger():
         day = time_list[2]
         time = time_list[3]
 
-        ret = str(' - '.join(' '.join(year, month, day), time))
+        ret = str(' - '.join(['.'.join([year, month, day]), time]))
 
         return ret
 

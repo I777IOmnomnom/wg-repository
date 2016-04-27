@@ -6,7 +6,7 @@ import inspect
 
 from PySide import QtCore, QtGui
 from media_handler import MediaHandler
-from wg_lib import MultiMediaLib
+from wg_lib import MultiMediaLib, logger
 
 # Creates the background application which is responsible for handling all PySide elements.
 app = QtGui.QApplication(sys.argv)
@@ -32,6 +32,7 @@ class Executioner:
     def __init__(self):
         self.mml = MultiMediaLib()
         self.mh = MediaHandler()
+        self.logger = logger()
 
     def main(self):
         """
@@ -50,8 +51,10 @@ class Executioner:
         :return:
         """
         wid = self.create_widget()
+        if not dialog:
+            dialog = 'init'
 
-        if dialog is None:
+        if dialog == 'init':
             self.initUI(wid)
 
         elif dialog == 'News':
@@ -72,14 +75,29 @@ class Executioner:
         elif dialog == 'Series':
             self.seriesUI(wid)
 
+        elif dialog == 'Netflix':
+            self.mml.exec_netflix()
+
+        elif dialog == 'Streaming':
+            self.helper()
+
         elif dialog == 'Spotify':
             self.mml.exec_spotify()
 
         elif dialog == 'Soundcloud':
-            self.mml.exec_soundcloud
+            self.mml.exec_soundcloud()
 
-        elif dialog == 'Netflix':
-            self.mml.exec_netflix()
+        elif dialog == 'Music (local)':
+            self.local_musicUI(wid)
+
+        elif dialog == 'Steam':
+            self.mml.exec_steam()
+
+        elif dialog == 'Emulator':
+            self.emulatorUI()
+
+        elif dialog == 'Games (local)':
+            self.local_gamesUI()
 
         elif dialog == 'Return':
             #magic incoming
@@ -93,12 +111,15 @@ class Executioner:
         else:
             sys.exit(app.exec_())
 
+        self.logger.info('{}UI is initiated'.format(dialog))
+
         return
 
     def initUI(self, wid):
         """
         Initial dialog.
 
+        :type wid:
         :param wid:
         :return:
         """
@@ -109,9 +130,11 @@ class Executioner:
 
         self.quit_button(wid)
 
-        wid.show()
+        ret = wid.show()
 
-        return
+        self.logger.info(ret)
+
+        return ret
 
     def newsUI(self, wid):
         """
@@ -133,32 +156,8 @@ class Executioner:
         self.push_button('Movie', wid, 210, 25)
         self.push_button('Series', wid, 210, 225)
         self.push_button('Netflix', wid, 210, 425)
-        self.push_button('Streaming (not implemented)', wid, 210, 625)
+        self.push_button('Streaming', wid, 210, 625)
         self.quit_button(wid)
-
-        wid.show()
-
-        return
-
-    def movieUI(self, wid):
-        """
-
-        :param wid:
-        :return:
-        """
-        # TBD
-
-        wid.show()
-
-        return
-
-    def seriesUI(self, wid):
-        """
-
-        :param wid:
-        :return:
-        """
-        # TBD
 
         wid.show()
 
@@ -171,7 +170,7 @@ class Executioner:
         """
         self.push_button('Spotify', wid, 210, 25)
         self.push_button('Soundcloud(X)', wid, 210, 225)
-        self.push_button('Local Music(X)', wid, 210, 425)
+        self.push_button('Music (local)', wid, 210, 425)
         self.quit_button(wid)
 
         wid.show()
@@ -183,7 +182,10 @@ class Executioner:
 
         :return:
         """
-        print('games')
+        self.push_button('Steam', wid, 210, 25)
+        self.push_button('Emulator', wid, 210, 225)
+        self.push_button('Games (local)', wid, 210, 425)
+        self.quit_button(wid)
 
         return
 
@@ -196,12 +198,53 @@ class Executioner:
         movie_list = self.mh.get_movie_list()
         self.create_list_view(wid, movie_list)
 
+        return
+
     def seriesUI(self, wid):
+        """
+
+        :param wid:
+        :return:
+        """
+        # TBD
+
+        wid.show()
+
+        return
+
+    def local_musicUI(self, wid):
+        """
+
+        :param wid:
+        :return:
+        """
+        # TBD
+
+        wid.show()
+
+        return
+
+    def emulatorUI(self, wid):
         """
 
         :return:
         """
-        # GET SERIES LIST
+        self.push_button('Steam', wid, 210, 25)
+        self.push_button('Emulator', wid, 210, 225)
+        self.push_button('Games (local)', wid, 210, 425)
+        self.quit_button(wid)
+
+        return
+
+    def local_gamesUI(self, wid):
+        """
+
+        :return:
+        """
+        self.push_button('Steam', wid, 210, 25)
+        self.push_button('Emulator', wid, 210, 225)
+        self.push_button('Games (local)', wid, 210, 425)
+        self.quit_button(wid)
 
         return
 
@@ -227,9 +270,9 @@ class Executioner:
         wid.resize(width, height)
         wid.setWindowTitle('WGus Managerus')
 
-        _ = wid.palette()
-        _.setColor(wid.backgroundRole(), QtCore.Qt.lightGray)
-        wid.setPalette(_)
+        p = wid.palette()
+        p.setColor(wid.backgroundRole(), QtCore.Qt.lightGray)
+        wid.setPalette(p)
 
         return wid
 
@@ -278,7 +321,7 @@ class Executioner:
         by the frontend selector (loopy is cool).
 
         :param name:
-        :param current_wid:
+        :param parent:
         :return:
         """
         parent.hide()
