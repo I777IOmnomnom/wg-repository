@@ -1,12 +1,11 @@
 #!/usr/bin/python
-from optparse import OptionParser
-import sys
-import time
 import inspect
+import sys
 
 from PySide import QtCore, QtGui
-from media_handler import MediaHandler
-from wg_lib import MultiMediaLib, logger
+
+from lib import MultiMediaLib, logger
+from file_classification_engine import MediaHandler
 
 # Creates the background application which is responsible for handling all PySide elements.
 app = QtGui.QApplication(sys.argv)
