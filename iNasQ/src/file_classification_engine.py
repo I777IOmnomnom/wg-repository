@@ -1,34 +1,14 @@
 #!/usr/bin/python3
 import os
 import time
+from lib import logger
 
-from lib import NasLib, SystemLib, logger
 
-
-class iNasQHandlerException(Exception):
+class FileClassificationException(Exception):
     pass
 
 
-class iNasQHandler():
-
-
-
-    def __init__(self):
-        self.sl = SystemLib()
-        self.nl = NasLib()
-        self.logger = logger()
-
-    def get_movie_list(self):
-        """
-
-        :return:
-        """
-        file_list = self.nl.get_file_list()
-        movie_list = MediaClassificationEngine().get_media_list_by_type(file_list, 'movie')
-
-        return movie_list
-
-class MediaClassificationEngine:
+class FileClassificationEngine:
     """
     The MediaHandlerClassificationEngine takes lists of absolute file paths and checks every file for different
     classification identifiers. If found, all classification identifiers are correlated to the according file and
@@ -37,6 +17,7 @@ class MediaClassificationEngine:
     #TODO: Expand classification identification patterns for increased detection- and information return rate.
     #TODO: Add check against MediaHandlerClassificationEngineResults-file to get only new files
     #TODO: Add database to store MediaHandlerCalssificationEngine results (@Lucas)
+
     def __init__(self):
         self.logger = logger()
         self.video_codec_list = ['avi', 'cam', 'mkv', 'mov', 'mpeg', 'mpg', 'mpe', 'svi', 'wmv',]
@@ -45,7 +26,7 @@ class MediaClassificationEngine:
         self.doc_codec_list = []
 
 
-    def (self, file_list, type=None):
+    def classification_engine(self, file_list, type=None):
         """
         Extracts all files from a list and classifies them. If type is given, only a dict for the given file type is
         returned
@@ -119,4 +100,4 @@ class MediaClassificationEngine:
         return movie_list, series_list, music_list, doc_list
 
 if __name__ == '__main__':
-    MediaHandler().init()
+    FileClassificationEngine().init()

@@ -7,70 +7,8 @@ import glob
 from PySide import QtGui, QtCore
 
 
-class BasicException(Exception):
+class LibException(Exception):
     pass
-
-class MultiMediaLib:
-
-    def exec_netflix(self):
-        pw = getpw()
-        cmd = ['/usr/bin/netflix-desktop', '--enable-hw-acceleration']
-        netflix = subprocess.Popen(['sudo', '-S'] + cmd,
-                                    stdin=subprocess.PIPE,
-                                    stderr=subprocess.PIPE,
-                                    universal_newlines=True)
-        #netflix.communicate(pw + '\n')[1]
-
-        return
-
-    def exec_spotify(self):
-        subprocess.Popen('spotify')
-
-        pass
-
-    def exec_vlc(self,titel, subtitle=False, fullscreen=True, language='german'):
-        pass
-
-    def exec_amazon_prime(self):
-        pass
-
-    def exec_soundcloud(self):
-        """
-
-        :return:
-        """
-        app = 'firefox'
-        mode = '--new-window'
-        url = 'http://soundcloud.com'
-
-        subprocess.Popen([app, mode, url],
-                         stdin=subprocess.PIPE,
-                         stderr=subprocess.PIPE,
-                         universal_newlines=True)
-
-    def exec_steam(self):
-        """
-
-        :return:
-        """
-        app = 'steam'
-        mode = '-bigpicture'
-
-        subprocess.Popen([app, mode],
-                         stdin=subprocess.PIPE,
-                         stderr=subprocess.PIPE,
-                         universal_newlines=True)
-
-class NewsLib:
-
-    def get_rss_feed(self, source):
-        pass
-
-    def analyze_rss_feed(self, rss_feed):
-        pass
-
-    def format_rss_feed(self, rss_feed):
-        pass
 
 
 class NasLib:
@@ -89,31 +27,6 @@ class NasLib:
 
         return files
 
-    def format_list(self, list, seperator='-'):
-        '''
-        Takes a list and formats it. Returns a list with single elements. The seperator
-        is used to identify values which are connected by them. The function will acknowledge
-        the values splitted by the seperator as minimal and maximal value. The range between
-        minimal and maximal value (including min. and max.) is then inserted into the list as
-        single elements
-        :param list:
-        :param seperator:
-        :return:
-        '''
-        list = list.split(seperator)
-
-        for list_entry in list:
-            if re.search('-', list_entry):
-                mini = int(list_entry.split('-')[0])
-                maxi = int(list_entry.split('-')[1]) + 1
-                for _ in range(mini, maxi):
-                    list.append(_)
-            else:
-                list.append(list_entry)
-
-        return list
-
-
     def get_file_type(self, dir):
         '''
         Returns the filetype, weather dir or file.
@@ -126,28 +39,6 @@ class NasLib:
             type = 'dir'
 
         return type
-
-    def exec_cmd(self, cmd):
-        '''
-        Executes a command after checking if the command is empty.
-        The return is always a string! The returncode is logged
-        as Debug.
-        :param cmd:
-        :return:
-        '''
-        if cmd is None:
-            raise WgLibException('No command given.')
-
-        log_msg = 'Executing: ' + str(cmd)
-        self.logger.info(log_msg)
-
-        try:
-            ret = subprocess.check_output(cmd, shell=True, universal_newlines=True).strip()
-        except subprocess.CalledProcessError as e:
-            self.logger.debug(e)
-
-        return str(ret)
-
 
 class SystemLib():
 
@@ -169,6 +60,29 @@ class SystemLib():
                 self.logger.alert('Missing config parameter: {} in {}.'.format(param, self.config_file))
 
         return config_dict
+
+    def exec_cmd(self, cmd):
+        '''
+        Executes a command after checking if the command is empty.
+        The return is always a string! The returncode is logged
+        as Debug.
+        :param cmd:
+        :return:
+        '''
+        if cmd is None:
+            raise LibException('No command given.')
+
+        log_msg = 'Executing: {}'.format(cmd)
+        self.logger.info(log_msg)
+
+        try:
+            ret = subprocess.check_output(cmd, shell=True, universal_newlines=True).strip()
+        except subprocess.CalledProcessError as e:
+            log_msg_alert = 'Non-Zero exit status ({}) for command: {}'.format(e.returncode, cmd)
+            log_msg_debug = 'Returncode: {}, Error: {}, Command: {}'.format(e.returncode, e , cmd)
+            self.logger.alert(log_msg_alert)
+            self.logger.debug(log_msg_debug)
+        return str(ret)
 
 class logger():
 
