@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>stuff</name>
-	<comment></comment>
+	<name>PePa</name>
+	<comment>PePa is the Pen and Paper application used for handling and organizing Pen and Paper plays.</comment>
 	<projects>
 	</projects>
 	<buildSpec>

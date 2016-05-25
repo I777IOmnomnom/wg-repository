@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import sys
-from pen_and_papierer.dice import Dice
+from dice import Dice
 from PySide import QtCore, QtGui
 
 # Creates the background application which is responsible for handling all PySide elements.
@@ -237,7 +237,6 @@ class Gui():
         qbtn.move(x, y)
 
         return qbtn
-
 
     def dice_roll(self, dice, parent):
         roll = self.dice.get_dice_roll(dice)
